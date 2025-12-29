@@ -18,20 +18,21 @@ namespace QPVControlMercancias.Services
             if (_database != null)
                 return;
 
-            _database = new SQLiteAsyncConnection(_databasePath);
-            await _database.CreateTableAsync<Product>();
+            var db = new SQLiteAsyncConnection(_databasePath);
+            await db.CreateTableAsync<Product>();
+            _database = db;
         }
 
         public async Task<List<Product>> GetProductsAsync()
         {
             await InitializeAsync();
-            return await _database!.Table<Product>().ToListAsync();
+            return await _database.Table<Product>().ToListAsync();
         }
 
         public async Task<Product?> GetProductByBarcodeAsync(string barcode)
         {
             await InitializeAsync();
-            return await _database!.Table<Product>()
+            return await _database.Table<Product>()
                 .Where(p => p.Barcode == barcode)
                 .FirstOrDefaultAsync();
         }
@@ -39,7 +40,7 @@ namespace QPVControlMercancias.Services
         public async Task<Product?> GetProductByIdAsync(int id)
         {
             await InitializeAsync();
-            return await _database!.Table<Product>()
+            return await _database.Table<Product>()
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync();
         }
@@ -51,25 +52,25 @@ namespace QPVControlMercancias.Services
 
             if (product.Id != 0)
             {
-                return await _database!.UpdateAsync(product);
+                return await _database.UpdateAsync(product);
             }
             else
             {
                 product.CreatedAt = DateTime.UtcNow;
-                return await _database!.InsertAsync(product);
+                return await _database.InsertAsync(product);
             }
         }
 
         public async Task<int> DeleteProductAsync(Product product)
         {
             await InitializeAsync();
-            return await _database!.DeleteAsync(product);
+            return await _database.DeleteAsync(product);
         }
 
         public async Task<int> GetProductCountAsync()
         {
             await InitializeAsync();
-            return await _database!.Table<Product>().CountAsync();
+            return await _database.Table<Product>().CountAsync();
         }
     }
 }

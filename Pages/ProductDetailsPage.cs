@@ -190,8 +190,9 @@ namespace QPVControlMercancias.Pages
                     var photo = await MediaPicker.Default.CapturePhotoAsync();
                     if (photo != null)
                     {
-                        // Save the photo to local storage
-                        var localFilePath = Path.Combine(FileSystem.AppDataDirectory, $"product_{DateTime.Now:yyyyMMddHHmmss}.jpg");
+                        // Save the photo to local storage with unique filename
+                        var fileName = $"product_{Guid.NewGuid():N}.jpg";
+                        var localFilePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
                         
                         using (var sourceStream = await photo.OpenReadAsync())
                         using (var localFileStream = File.OpenWrite(localFilePath))
