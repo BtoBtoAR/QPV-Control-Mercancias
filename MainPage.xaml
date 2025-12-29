@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QPVControlMercancias.MainPage"
+             Title="QPV Control de Mercancías">
+
+    <Grid Padding="20" RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <Label Grid.Row="0"
+               Text="Control de Mercancías"
+               FontSize="28"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Margin="0,20,0,10" />
+
+        <!-- Scan Button -->
+        <Button Grid.Row="1"
+                x:Name="ScanButton"
+                Text="Escanear Código de Barras"
+                BackgroundColor="#2196F3"
+                TextColor="White"
+                FontSize="18"
+                HeightRequest="60"
+                CornerRadius="10"
+                Clicked="OnScanButtonClicked" />
+
+        <!-- Product List -->
+        <CollectionView Grid.Row="2"
+                       x:Name="ProductsCollectionView"
+                       SelectionMode="Single"
+                       SelectionChanged="OnProductSelected"
+                       Margin="0,10,0,0">
+            <CollectionView.EmptyView>
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+                    <Label Text="No hay productos registrados"
+                           FontSize="16"
+                           TextColor="Gray"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="Escanee un código de barras para comenzar"
+                           FontSize="14"
+                           TextColor="Gray"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,10,0,0" />
+                </StackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,5" Padding="15" CornerRadius="10" BorderColor="LightGray">
+                        <Grid ColumnSpacing="15" RowSpacing="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Product Image Placeholder -->
+                            <Frame Grid.Column="0" Grid.RowSpan="3"
+                                   WidthRequest="60" HeightRequest="60"
+                                   CornerRadius="5" Padding="0"
+                                   BackgroundColor="LightGray"
+                                   HasShadow="False">
+                                <Label Text="📦" FontSize="30" 
+                                       HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Frame>
+
+                            <!-- Product Info -->
+                            <Label Grid.Column="1" Grid.Row="0"
+                                   Text="{Binding Description}"
+                                   FontSize="16"
+                                   FontAttributes="Bold" />
+                            <Label Grid.Column="1" Grid.Row="1"
+                                   Text="{Binding Barcode}"
+                                   FontSize="14"
+                                   TextColor="Gray" />
+                            <Label Grid.Column="1" Grid.Row="2"
+                                   FontSize="14">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Stock: " TextColor="Gray" />
+                                        <Span Text="{Binding Stock}" FontAttributes="Bold" />
+                                        <Span Text=" | Precio: $" TextColor="Gray" />
+                                        <Span Text="{Binding SellingPrice, StringFormat='{0:F2}'}" FontAttributes="Bold" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Stats -->
+        <Frame Grid.Row="3" 
+               BackgroundColor="#E3F2FD"
+               BorderColor="Transparent"
+               Padding="15"
+               Margin="0,10,0,0">
+            <Label x:Name="StatsLabel"
+                   Text="Total de productos: 0"
+                   FontSize="14"
+                   HorizontalOptions="Center" />
+        </Frame>
+    </Grid>
+
+</ContentPage>
